@@ -1,0 +1,79 @@
+{
+  "name": "ask-lifi-docs",
+  "version": "0.0.1",
+  "description": "Simple CLI demo for chatting with LIFI docs",
+  "author": "Ed Zynda @ezynda3",
+  "bin": {
+    "ask-lifi-docs": "./bin/run"
+  },
+  "homepage": "https://github.com/ezynda3/langchain",
+  "license": "MIT",
+  "main": "dist/index.js",
+  "repository": "ezynda3/langchain",
+  "files": [
+    "/bin",
+    "/dist",
+    "/npm-shrinkwrap.json",
+    "/oclif.manifest.json"
+  ],
+  "dependencies": {
+    "@oclif/core": "^2",
+    "@oclif/plugin-help": "^5",
+    "@oclif/plugin-plugins": "^2.4.4",
+    "chalk": "^4.2.0",
+    "cheerio": "^1.0.0-rc.12",
+    "dotenv": "^16.0.3",
+    "hnswlib-node": "^1.4.2",
+    "langchain": "^0.0.55"
+  },
+  "devDependencies": {
+    "@oclif/test": "^2.3.14",
+    "@types/chai": "^4",
+    "@types/mocha": "^9.0.0",
+    "@types/node": "^16.18.23",
+    "chai": "^4",
+    "eslint": "^7.32.0",
+    "eslint-config-oclif": "^4",
+    "eslint-config-oclif-typescript": "^1.0.3",
+    "mocha": "^9",
+    "oclif": "^3",
+    "redis": "^4.6.5",
+    "shx": "^0.3.3",
+    "ts-node": "^10.9.1",
+    "tslib": "^2.5.0",
+    "typeorm": "^0.3.14",
+    "typescript": "^4.9.5"
+  },
+  "oclif": {
+    "bin": "ask-lifi-docs",
+    "dirname": "ask-lifi-docs",
+    "commands": "./dist",
+    "default": ".",
+    "plugins": [
+      "@oclif/plugin-help",
+      "@oclif/plugin-plugins"
+    ],
+    "topicSeparator": " ",
+    "topics": {}
+  },
+  "scripts": {
+    "build": "shx rm -rf dist && tsc -b",
+    "lint": "eslint . --ext .ts --config .eslintrc",
+    "postpack": "shx rm -f oclif.manifest.json",
+    "posttest": "yarn lint",
+    "prepack": "yarn build && oclif manifest && oclif readme",
+    "test": "mocha --forbid-only \"test/**/*.test.ts\"",
+    "version": "oclif readme && git add README.md"
+  },
+  "engines": {
+    "node": ">=12.0.0"
+  },
+  "bugs": "https://github.com/ezynda3/langchain/issues",
+  "keywords": [
+    "oclif",
+    "langchain",
+    "lifi",
+    "openai"
+  ],
+  "types": "dist/index.d.ts"
+}
