@@ -6,10 +6,10 @@
   "bin": {
     "ask-lifi-docs": "./bin/run"
   },
-  "homepage": "https://github.com/ezynda3/langchain",
+  "homepage": "https://github.com/lifinance/ask-lifi-docs",
   "license": "MIT",
   "main": "dist/index.js",
-  "repository": "ezynda3/langchain",
+  "repository": "lifinance/ask-lifi-docs",
   "files": [
     "/bin",
     "/dist",
