@@ -5,7 +5,7 @@ import { HNSWLib } from "langchain/vectorstores/hnswlib";
 import { OpenAIEmbeddings } from "langchain/embeddings/openai";
 import * as dotenv from 'dotenv'
 import { OpenAI } from "langchain/llms/openai";
-import { RetrievalQAChain } from "langchain/chains";
+import { ConversationalRetrievalQAChain } from "langchain/chains";
 import * as chalk from 'chalk'
 import * as fs from 'fs'
 import { ChainValues } from "langchain/schema";
@@ -30,18 +30,22 @@ export default class AskCommand extends Command {
       await vectorStore.save('./.vectorstore')
     } else {
       ux.action.start(chalk.blue('Loading'))
-      vectorStore = await HNSWLib.load('/tmp/lifidocs', new OpenAIEmbeddings())
+      vectorStore = await HNSWLib.load('./.vectorstore', new OpenAIEmbeddings())
       ux.action.stop()
     }
 
     const model = new OpenAI({})
-    const chain = RetrievalQAChain.fromLLM(model, vectorStore.asRetriever(), { returnSourceDocuments: true })
+    const chain = ConversationalRetrievalQAChain.fromLLM(model, vectorStore.asRetriever(), { returnSourceDocuments: true })
+
+    let chatHistory: string[] = []
 
     while (true) {
       const query = await ux.prompt(chalk.green('\n\nQuestion'))
-      const res = await chain.call({ query })
+      const res = await chain.call({ question: query, chat_history: chatHistory })
+
       ux.log(chalk.green('\nAnswer:\n'), res.text)
       ux.log(chalk.green('\nSources:'))
+      chatHistory.push(query + '\n' + res.text)
       console.log(res.sourceDocuments.map((d: ChainValues) => d.metadata.source).join('\n'))
     }
   }
